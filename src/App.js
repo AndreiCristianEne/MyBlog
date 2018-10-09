@@ -5,6 +5,7 @@ import {Route, Redirect} from 'react-router-dom'
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/index';
+import Submit from './pages/Submit';
 
 class App extends Component {
     async componentWillMount() {
@@ -19,6 +20,7 @@ class App extends Component {
             <div>
                 <Route path="/login" component={Login}/>
                 <Route path="/signup" component={Signup}/>
+                <Route path="/submit" component={Submit}/>
                 <Route path="/" exact component={Home}/>
             </div>
         );
