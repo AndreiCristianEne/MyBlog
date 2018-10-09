@@ -16,9 +16,7 @@ export default class Signup extends Component {
             valid: false,
         },
         avatar: {
-            value: '',
-            touched: '',
-            valid: false,
+            value: ''
         },
         username: {
             value: '',
@@ -31,7 +29,7 @@ export default class Signup extends Component {
         const {email, password, avatar, username} = this.state;
 
         try {
-            await axios.post('http://localhost:8888/api/user/signup.php',qs.stringify({
+            await axios.post('http://localhost:8888/api/user/signup.php', qs.stringify({
                 email: email.value,
                 password: password.value,
                 avatar: avatar.value,
@@ -42,19 +40,20 @@ export default class Signup extends Component {
         }
     }
 
-    handleEmailChange (email) {
-
+    handleEmailChange(email) {
+        const validateEmailRegEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        this.setState({email: {value: email, touched: true, valid: validateEmailRegEx.test(email)}});
     }
 
-    handlePasswordChange (password) {
-
+    handlePasswordChange(password) {
+        this.setState({password: {value: password, touched: true, valid: password.length > 6}});
     }
 
-    handleUsernameChange (username) {
-
+    handleUsernameChange(username) {
+        this.setState({username: {value: username, touched: true, valid: username.length > 4}});
     }
 
-    handleAvatarUpload (avatar) {
+    handleAvatarUpload(avatar) {
 
     }
 
@@ -67,15 +66,45 @@ export default class Signup extends Component {
                     <div className="column is-4 is-offset-4">
                         <div className="box">
                             <div className="field">
-                                <div className="control">
-                                    <input placeholder="Email" value={email.value} className={`input ${email.touched && !email.valid && 'is-danger'}`}/>
+                                <div className="controk">
+                                    <div className="content">
+                                        <h4>Signup</h4>
+                                        <p>Please fill-in the fields below in order to register.</p>
+                                    </div>
                                 </div>
                             </div>
-                        <div className="field">
-                            <div className="control">
-                                <button className="button" onClick={() => this.signUp()}>Sign Up</button>
+                            <div className="field">
+                                <div className="control">
+                                    <input placeholder="Name"
+                                           className={`input ${username.touched && !username.valid && 'is-danger'}`}
+                                           onChange={e => this.handleUsernameChange(e.target.value)}
+                                           value={username.value}/>
+                                </div>
                             </div>
-                        </div>
+                            <div className="field">
+                                <div className="control">
+                                    <input placeholder="Email" value={email.value}
+                                           className={`input ${email.touched && !email.valid && 'is-danger'}`}
+                                           onChange={e => this.handleEmailChange(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="field">
+                                <div className="control">
+                                    <input placeholder="Password" value={password.value}
+                                           className={`input ${password.touched && !password.valid && 'is-danger'}`}
+                                           type="password"
+                                           onChange={e => this.handlePasswordChange(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="field">
+                                <div className="control">
+                                    <button className="button" onClick={() => this.signUp()}
+                                            disabled={!email.valid || !password.valid || !username.valid}>Sign Up
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
