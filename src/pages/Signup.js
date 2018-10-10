@@ -16,7 +16,7 @@ export default class Signup extends Component {
             valid: false,
         },
         avatar: {
-            value: 'empty'
+            value: null
         },
         username: {
             value: '',
@@ -53,8 +53,15 @@ export default class Signup extends Component {
         this.setState({username: {value: username, touched: true, valid: username.length > 4}});
     }
 
-    handleAvatarUpload(avatar) {
+    handleAvatarUpload(e) {
+        const reader = new FileReader();
+        const file = e.target.files[0];
 
+        reader.onload = data => {
+            this.setState({avatar: {value: data.target.result}});
+        };
+
+        reader.readAsDataURL(file);
     }
 
     render() {
@@ -72,6 +79,21 @@ export default class Signup extends Component {
                                         <p>Please fill-in the fields below in order to register.</p>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="field">
+                                    <div className="file is-boxed">
+                                        <label className="file-label">
+                                            <input className="file-input" type="file" onChange={e => this.handleAvatarUpload(e)}/>
+                                            <span className="file-cta">
+                                                <span className="file-icon">
+                                                    <i className="fas fa-cloud-upload-alt"/>
+                                                </span>
+                                                 <span className="file-label">
+                                                    Avatar upload
+                                                 </span>
+                                            </span>
+                                        </label>
+                                    </div>
                             </div>
                             <div className="field">
                                 <div className="control">
@@ -101,7 +123,8 @@ export default class Signup extends Component {
                             <div className="field">
                                 <div className="control">
                                     <button className="button" onClick={() => this.signUp()}
-                                            disabled={!email.valid || !password.valid || !username.valid}>Sign Up
+                                            disabled={!email.valid || !password.valid || !username.valid || !avatar.value}>Sign
+                                        Up
                                     </button>
                                 </div>
                             </div>
