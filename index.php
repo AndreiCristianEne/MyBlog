@@ -1,7 +1,6 @@
 <?php
 include "./cors.php";
 include "./protected_session.php";
-
 ?>
 
 <h4>

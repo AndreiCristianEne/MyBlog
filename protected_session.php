@@ -3,7 +3,8 @@ include "./connect_mysql.php";
 include "./session.php";
 
 //init token
-$token = $_SESSION['AUTH_TOKEN'] ? $_SESSION['AUTH_TOKEN'] : $_POST['AUTH_TOKEN'] ? $_POST['AUTH_TOKEN'] : header("UNAVAILABLE RESOURCE", true, 400);
+$headers = apache_request_headers();
+$token = $_SESSION['AUTH_TOKEN'] ? $_SESSION['AUTH_TOKEN'] : $_POST['AUTH_TOKEN'] ? $_POST['AUTH_TOKEN'] : header("UNAVAILABLE RESOURCE", true, 400) && exit();
 $signature = base64_decode($token);
 
 

@@ -6,22 +6,35 @@ import {convertToRaw} from 'draft-js'
 export default class Submit extends Component {
 
     state = {
-        title: ''
+        title: {
+            value: '',
+            touched: false,
+            valid: false
+        }
     };
 
     async saveArticle() {
         const editorState = this.editor.state.editorState;
-        console.log(JSON.stringify(convertToRaw(editorState.getCurrentContent())));
+        const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+        console.log(data);
+    }
+
+    handleChangeTitle(title) {
+        this.setState({title: {value: title, touched: true, valid: title !== '' && title !== ' '}});
     }
 
     render() {
+        const {title} = this.state;
+
         return (
             <div className="section">
                 <div className="columns">
                     <div className="column is-4 is-offset-4">
                         <div className="field">
                             <div className="control">
-                                <input className="input" placeholder="Article Title"/>
+                                <input className={`input ${title.touched && !title.valid && 'is-danger'}`}
+                                       placeholder="Article Title" value={title.value}
+                                       onChange={e => this.handleChangeTitle(e.target.value)}/>
                             </div>
                         </div>
                     </div>

@@ -29,22 +29,12 @@ export default class Login extends Component {
 
     async login() {
         const {password, email} = this.state;
-
         try {
             const {data} = await axios.post('http://localhost:8888/api/user/login.php', qs.stringify({
                 email: email.value,
                 password: password.value
             }));
-            await this.checkLogin(data);
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    async checkLogin(token) {
-        try {
-            const {data} = await axios.post('http://localhost:8888/index.php', qs.stringify({AUTH_TOKEN: token}));
-            console.log(data);
+            localStorage.setItem('AUTH_TOKEN', data);
         } catch (err) {
             console.log(err);
         }
