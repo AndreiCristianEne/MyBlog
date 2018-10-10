@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import axios from 'axios';
+import qs from 'qs';
 
 export default class Login extends Component {
 
@@ -25,6 +27,29 @@ export default class Login extends Component {
         this.setState({email: {value: email, touched: true, valid: validateEmailRegEx.test(email)}})
     }
 
+    async login() {
+        const {password, email} = this.state;
+
+        try {
+            const {data} = await axios.post('http://localhost:8888/api/user/login.php', qs.stringify({
+                email: email.value,
+                password: password.value
+            }));
+            await this.checkLogin(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async checkLogin(token) {
+        try {
+            const {data} = await axios.post('http://localhost:8888/index.php', qs.stringify({AUTH_TOKEN: token}));
+            console.log(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     render() {
         const {password, email} = this.state;
 
@@ -38,7 +63,8 @@ export default class Login extends Component {
                                     <div className="content">
                                         <h4>Login</h4>
                                         <p>Please login in order to continue using our blog!</p>
-                                        <p>If you do not have an account, head over to the <Link to="signup">signup</Link> page.</p>
+                                        <p>If you do not have an account, head over to the <Link
+                                            to="signup">signup</Link> page.</p>
                                     </div>
                                 </div>
                             </div>
@@ -60,7 +86,8 @@ export default class Login extends Component {
                             </div>
                             <div className="field">
                                 <div className="control">
-                                    <button className="button" disabled={!password.valid || !email.valid}>Login
+                                    <button className="button" disabled={!password.valid || !email.valid}
+                                            onClick={() => this.login()}>Login
                                     </button>
                                 </div>
                             </div>

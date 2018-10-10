@@ -16,7 +16,7 @@ export default class Signup extends Component {
             valid: false,
         },
         avatar: {
-            value: ''
+            value: 'empty'
         },
         username: {
             value: '',

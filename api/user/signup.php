@@ -1,13 +1,21 @@
 <?php
-include("../../cors.php");
-include("../../connect_mysql.php");
+include "../../cors.php";
+include "../../connect_mysql.php";
 
 //    user should have name, password, email, profile data
 if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avatar"]) {
+
     $email = $_POST["email"];
+//    need to hash this before adding it to DB
     $password = $_POST["password"];
     $username = $_POST["username"];
+
+//    unique user id for the DB
+    $user_id = uniqid();
+
+//    avatar data needs to be written in a jpg image
     $avatar_data = $_POST["avatar"];
+//    avatar path should be something like username (stripped) + "_profile.jpg"
     $avatar_path = "profile.jpg";
 
 
@@ -26,13 +34,15 @@ if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avata
         exit();
     }
 
+//    inserting the user in the database
     try {
-        $stmt = $conn->prepare("INSERT INTO users (username, email, password, avatar_path)
-    VALUES (:username, :email, :password, :avatar_path)");
+        $stmt = $conn->prepare("INSERT INTO users (username, email, password, avatar_path, user_id)
+    VALUES (:username, :email, :password, :avatar_path, :user_id)");
         $stmt->bindParam(':username', $username);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':avatar_path', $avatar_path);
+        $stmt->bindParam(':user_id', $user_id);
 
         // insert a row
         $stmt->execute();
