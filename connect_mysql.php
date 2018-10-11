@@ -1,8 +1,8 @@
 <?php
-//$servername = $_ENV["MYSQL_HOST"] || 'localhost';
-//$username = $_ENV["MYSQL_USERNAME"] || 'root';
-//$password = $_ENV["MYSQL_PASSWORD"] || 'root';
-//$database = $_ENV["MYSQL_DATABASE"] || 'blog';
+//$servername = $_ENV["MYSQL_HOST"]
+//$username = $_ENV["MYSQL_USERNAME"]
+//$password = $_ENV["MYSQL_PASSWORD"]
+//$database = $_ENV["MYSQL_DATABASE"]
 
 $servername = 'localhost';
 $username = 'root';

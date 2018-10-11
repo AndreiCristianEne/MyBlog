@@ -8,13 +8,15 @@ export default (BaseComponent) => {
 
         state = {
             loading: true,
-            loggedIn: false
+            loggedIn: false,
+            authToken: null
         };
 
         async componentWillMount() {
+            const token = localStorage.getItem('AUTH_TOKEN');
             try {
-                await axios.post('http://localhost:8888/index.php', qs.stringify({AUTH_TOKEN: localStorage.getItem('AUTH_TOKEN')}));
-                this.setState({loading: false, loggedIn: true});
+                await axios.post('http://localhost:8888/index.php', qs.stringify({AUTH_TOKEN: token}));
+                this.setState({loading: false, loggedIn: true, authToken: token});
             } catch (err) {
                 console.log(err);
                 this.setState({loading: false, loggedIn: false});
@@ -22,14 +24,14 @@ export default (BaseComponent) => {
         }
 
         render() {
-            const {loading, loggedIn} = this.state;
+            const {loading, loggedIn, authToken} = this.state;
             const props = this.props;
 
             return (
                 loading
                     ? <h1>Loading</h1>
                     : loggedIn
-                    ? <BaseComponent {...props}/>
+                    ? <BaseComponent {...props} authToken={authToken}/>
                     : <Redirect to="/login"/>
             );
 

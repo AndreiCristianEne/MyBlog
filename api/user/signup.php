@@ -46,13 +46,12 @@ if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avata
 
         // insert a row
         $stmt->execute();
+        exit();
     } catch (Exception $e) {
         header("FAILED OPERATION", false, 500);
         exit();
     }
 
-
-    exit();
 } else {
     header("NOT ENOUGH INFO", true, 400);
     exit();

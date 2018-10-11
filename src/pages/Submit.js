@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Editor from '../components/Editor';
 import {convertToRaw} from 'draft-js'
+import qs from 'qs';
+import axios from 'axios';
 
 
 export default class Submit extends Component {
@@ -14,9 +16,19 @@ export default class Submit extends Component {
     };
 
     async saveArticle() {
+        const {title} = this.state;
+
         const editorState = this.editor.state.editorState;
         const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-        console.log(data);
+        try {
+            await axios.post('http://localhost:8888/api/article/add.php', qs.stringify({
+                AUTH_TOKEN: this.props.authToken,
+                article_data: data,
+                title: title.value
+            }));
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     handleChangeTitle(title) {
