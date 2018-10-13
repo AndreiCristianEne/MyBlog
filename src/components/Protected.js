@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import axios from 'axios'
 import qs from 'qs';
 
-export default (BaseComponent) => {
+export default (BaseComponent, restricted) => {
     return class extends Component {
 
         state = {
@@ -31,8 +31,10 @@ export default (BaseComponent) => {
                 loading
                     ? <h1>Loading</h1>
                     : loggedIn
-                    ? <BaseComponent {...props} authToken={authToken}/>
-                    : <Redirect to="/login"/>
+                    ? <BaseComponent {...props} authToken={authToken} isLoggedIn={true}/>
+                    : restricted
+                        ? <Redirect to="/login"/>
+                        : <BaseComponent {...props} isLoggedIn={false}/>
             );
 
         }
