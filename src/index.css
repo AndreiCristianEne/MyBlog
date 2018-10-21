@@ -1,0 +1,4 @@
+.disabled-link {
+    color: #808080;
+    pointer-events: none;
+}

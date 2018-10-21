@@ -58,7 +58,9 @@ export default class Signup extends Component {
         const file = e.target.files[0];
 
         reader.onload = data => {
-            this.setState({avatar: {value: data.target.result}});
+            if (data.target.result.indexOf('jpeg') > -1) {
+                this.setState({avatar: {value: data.target.result}});
+            }
         };
 
         reader.readAsDataURL(file);

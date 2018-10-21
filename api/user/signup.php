@@ -5,8 +5,27 @@ include "../../connect_mysql.php";
 //    user should have name, password, email, profile data
 if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avatar"]) {
 
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+        header("INVALID EMAIL ADDRESS", true, 400);
+        exit();
+    }
+
+    if (strlen($_POST['password']) < 6) {
+        header("INVALID PASSWORD", true, 400);
+        exit();
+    }
+
+    if (strlen($_POST['username']) < 4) {
+        header("INVALID USERNAME", true, 400);
+        exit();
+    }
+
+    if (!preg_match('#^data:image/\jpeg;base64,#i', $_POST["avatar"])) {
+        header("INVALID USERNAME", true, 400);
+        exit();
+    }
+
     $email = $_POST["email"];
-//    need to hash this before adding it to DB
     $password = $_POST["password"];
     $username = $_POST["username"];
 
@@ -15,24 +34,9 @@ if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avata
 
 //    avatar data needs to be written in a jpg image
     $avatar_data = $_POST["avatar"];
-//    avatar path should be something like username (stripped) + "_profile.jpg"
-    $avatar_path = "profile.jpg";
-
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        header("INVALID EMAIL ADDRESS", true, 400);
-        exit();
-    }
-
-    if (strlen($password) < 6) {
-        header("INVALID PASSWORD", true, 400);
-        exit();
-    }
-
-    if (strlen($username) < 4) {
-        header("INVALID USERNAME", true, 400);
-        exit();
-    }
+    $avatar_data = base64_decode(preg_replace('#^data:image/\jpeg;base64,#i', '', $avatar_data));
+    $avatar_path = $user_id.".jpg";
+    file_put_contents('../public/images/'.$avatar_path, $avatar_data);
 
 //    inserting the user in the database
     try {

@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 //bulma css
 import 'bulma/css/bulma.min.css';
+import './index.css';
 
 ReactDOM.render(
     <BrowserRouter>

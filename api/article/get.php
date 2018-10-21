@@ -4,7 +4,7 @@ include "../../connect_mysql.php";
 
 try {
     $articles = [];
-    $stmt = $conn->prepare("SELECT * FROM articles");
+    $stmt = $conn->prepare("SELECT articles.*, users.username, users.avatar_path FROM articles LEFT JOIN users ON users.user_id = articles.user_id");
 
     $stmt->execute();
 
@@ -16,6 +16,8 @@ try {
         $jsonArticle->article_data = $article['article_data'];
         $jsonArticle->user_id = $article['user_id'];
         $jsonArticle->id=$article['id'];
+        $jsonArticle->username = $article['username'];
+        $jsonArticle->avatar_path = $article['avatar_path'];
 
         array_push($articles, $jsonArticle);
     }
