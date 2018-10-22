@@ -27,9 +27,10 @@ CREATE TABLE `articles` (
   `article_data` longtext,
   `user_id` varchar(50) DEFAULT NULL,
   `title` varchar(50) DEFAULT NULL,
+  `description` tinytext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `articles_id_uindex` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +39,7 @@ CREATE TABLE `articles` (
 
 LOCK TABLES `articles` WRITE;
 /*!40000 ALTER TABLE `articles` DISABLE KEYS */;
-INSERT INTO `articles` VALUES (12,'{\"blocks\":[{\"key\":\"645v8\",\"text\":\"HOC - Higher Order Components - are a very useful pattern in React.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":32,\"style\":\"BOLD\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"90b78\",\"text\":\"For example, a protected component could look like:\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"apqbb\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"csqib\",\"text\":\"export default (OldComponent) => loggedIn ? <OldComponent/> : <Redirect to=\\\"/login\\\"/> \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":86,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}','5bbdba958b155','React HOC'),(13,'{\"blocks\":[{\"key\":\"289i\",\"text\":\"This is my awesome <article> \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":19,\"length\":10,\"style\":\"CODE\"},{\"offset\":20,\"length\":7,\"style\":\"BOLD\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}','5bbdba958b155','Hello World'),(14,'{\"blocks\":[{\"key\":\"ahftu\",\"text\":\"React JS boilerplates used to be difficult to come by, and even more difficult to implement. \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"80h51\",\"text\":\"Fortunately though, there now exists create-react-app.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":18,\"style\":\"BOLD\"},{\"offset\":37,\"length\":16,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"al6v2\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"eh3v0\",\"text\":\"How does it work ? It\'s simple, just do npm install -g create-react-app to install the tool globaly and then run create-react-app demo.  \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":40,\"length\":32,\"style\":\"CODE\"},{\"offset\":113,\"length\":24,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}','5bccc0f72ad2f','Hello React');
+INSERT INTO `articles` VALUES (14,'{\"blocks\":[{\"key\":\"ahftu\",\"text\":\"React JS boilerplates used to be difficult to come by, and even more difficult to implement. \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"80h51\",\"text\":\"Fortunately though, there now exists create-react-app.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":18,\"style\":\"BOLD\"},{\"offset\":37,\"length\":16,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"al6v2\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"eh3v0\",\"text\":\"How does it work ? It\'s simple, just do npm install -g create-react-app to install the tool globaly and then run create-react-app demo.  \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":40,\"length\":32,\"style\":\"CODE\"},{\"offset\":113,\"length\":24,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}','5bccc0f72ad2f','Hello React',NULL),(16,'{\"blocks\":[{\"key\":\"dg7fa\",\"text\":\"Well ... I lied, this article is not that awesome ... !!awesome\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":54,\"length\":9,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}','5bccc0f72ad2f','This is my awesome article',''),(17,'{\"blocks\":[{\"key\":\"8serd\",\"text\":\"So, you want to do types in Javascript. It\'s never been easier. \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"fpcdu\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"e47n\",\"text\":\"Just do npm install --save-dev flow and configure your flow configuration. \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":8,\"length\":28,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}','5bccc0f72ad2f','Javascript types','Javascript types are pretty damn awesome.');
 /*!40000 ALTER TABLE `articles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +70,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (1,'I totally agree Andrei.','5bbdba958b155',12),(2,'EDIT: create-react-app is an awesome too. Use it!','5bccc0f72ad2f',14),(3,'I totally agree.','5bccc0f72ad2f',14);
+INSERT INTO `comments` VALUES (2,'EDIT: create-react-app is an awesome too. Use it!','5bccc0f72ad2f',14),(3,'I totally agree.','5bccc0f72ad2f',14);
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -99,7 +100,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Andrei Ungureanu','au@gmail.com','profile.jpg','password','5bbdba958b155'),(2,'Andrei Ungureanu','andrei@gmail.com','5bccc0f72ad2f.jpg','password','5bccc0f72ad2f');
+INSERT INTO `users` VALUES (2,'Andrei Ungureanu','andrei@gmail.com','5bccc0f72ad2f.jpg','password','5bccc0f72ad2f');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -112,4 +113,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-21 21:12:08
+-- Dump completed on 2018-10-22 17:24:24

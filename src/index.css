@@ -2,3 +2,9 @@
     color: #808080;
     pointer-events: none;
 }
+
+.article-thumbnail {
+    max-height: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

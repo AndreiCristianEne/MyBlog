@@ -13,7 +13,7 @@ try {
         $jsonArticle = json_decode("{}");
 
         $jsonArticle->title = stripslashes($article['title']);
-        $jsonArticle->article_data = $article['article_data'];
+        $jsonArticle->article_data = $article['description'];
         $jsonArticle->user_id = $article['user_id'];
         $jsonArticle->id=$article['id'];
         $jsonArticle->username = $article['username'];

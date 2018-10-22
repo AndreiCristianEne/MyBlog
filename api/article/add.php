@@ -8,6 +8,7 @@ if ($_POST["title"] && $_POST["article_data"] && $_POST['AUTH_TOKEN']) {
 
     $article_data = $_POST["article_data"];
     $article_title = addslashes($_POST["title"]);
+    $article_description = addslashes($_POST["description"]);
     $token = $_POST['AUTH_TOKEN'];
     $token_data = explode('.', $token);
     $payloadDecoded = base64UrlDecode($token_data[1]);
@@ -15,11 +16,12 @@ if ($_POST["title"] && $_POST["article_data"] && $_POST['AUTH_TOKEN']) {
 
 
     try {
-        $stmt = $conn->prepare("INSERT INTO articles (title, user_id, article_data) VALUES (:title, :user_id, :article_data)");
+        $stmt = $conn->prepare("INSERT INTO articles (title, user_id, article_data, description) VALUES (:title, :user_id, :article_data, :description)");
 
         $stmt->bindParam(':title', $article_title);
         $stmt->bindParam(':article_data', $article_data);
         $stmt->bindParam(':user_id', $user_id);
+        $stmt->bindParam(':description', $article_description);
 
         // insert a row
         $stmt->execute();

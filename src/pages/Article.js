@@ -60,7 +60,7 @@ export default class Article extends Component {
                 {
                     !loading &&
                     <div className="columns">
-                        <div className="column is-6 is-offset-1">
+                        <div className="column is-5 is-offset-1">
                             <div className="content">
                                 <h2>{article.title}</h2>
                                 <div
@@ -104,7 +104,7 @@ export default class Article extends Component {
                                 </div>
                             }
                             {
-                                isLoggedIn && <hr/>
+                                article.comments.length > 0 && <hr/>
                             }
                             {
                                 article.comments.map((comment, key) => {
