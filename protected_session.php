@@ -1,15 +1,23 @@
 <?php
 
 //init token
-$token = $_SESSION['AUTH_TOKEN'] ? $_SESSION['AUTH_TOKEN'] : $_POST['AUTH_TOKEN'] ? $_POST['AUTH_TOKEN'] : header("UNAVAILABLE RESOURCE", true, 400);
-$signature = json_decode(base64_decode($token))->user_id;
+$token = $_POST['AUTH_TOKEN'] ? $_POST['AUTH_TOKEN'] : header("UNAVAILABLE RESOURCE", true, 400);
+$verify = verifyJWT('sha256', $token, $secret);
+
+if (!$verify) {
+    header("COULD NOT AUTHENTICATE", true, 400);
+    exit();
+}
+
+$token_data = explode('.', $token);
+$payloadDecoded = base64UrlDecode($token_data[1]);
+$user_id = json_decode($payloadDecoded)->user_id;
 
 try {
     $loggedIn = false;
 
     $stmt = $conn->prepare("SELECT * FROM users WHERE user_id = :user_id LIMIT 1");
-    $stmt->bindParam(':user_id', $signature);
-
+    $stmt->bindParam(':user_id', $user_id);
     $stmt->execute();
 
     $result = $stmt->fetchAll();

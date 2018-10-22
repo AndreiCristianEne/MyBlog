@@ -1,6 +1,6 @@
 <?php
 include "./cors.php";
-include "./session.php";
+include "./jwt.php";
 include "./connect_mysql.php";
 include "./protected_session.php";
 ?>

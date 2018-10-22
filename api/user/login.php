@@ -2,6 +2,7 @@
 include "../../cors.php";
 include "../../session.php";
 include "../../connect_mysql.php";
+include "../../jwt.php";
 
 if ($_POST["email"] && $_POST["password"]) {
 
@@ -17,20 +18,18 @@ if ($_POST["email"] && $_POST["password"]) {
 
         $result = $stmt->fetchAll();
         foreach ($result as $user) {
+            $header = [
+                "alg" => "HS256",
+                "typ" => "JWT"
+            ];
 
-            $user_id = $user['user_id'];
+            $payload = [
+                "user_id" => $user['user_id']
+            ];
 
-//            working on the token
-            $payload = json_encode(['user_id' => $user_id]);
-            $base64UrlPayload = base64_encode($payload);
-
-            $jwt = $base64UrlPayload;
-
-            $_SESSION['AUTH_TOKEN'] = $jwt;
-//            delete this when serving from the same domain
-            echo $jwt;
+            $token = generateJWT('sha256', $header, $payload, $secret);
+            echo $token;
             exit();
-
         }
 
         header("COULD NOT AUTHENTICATE", true, 400);
