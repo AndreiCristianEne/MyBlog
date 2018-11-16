@@ -35,6 +35,13 @@ export default class Article extends Component {
         });
         try {
             await axios.post('http://localhost:8888/api/article/comment.php', data);
+            const response = await axios.get(`http://localhost:8888/api/article/fetch_comments.php?id=${article.id}`);
+            this.setState({article: {...article, comments: response.data},
+                comment: {
+                    touched: false,
+                    value: this.props.isLoggedIn ? '' : 'You cannot comment if you are not logged in'
+                }
+            });
         } catch (err) {
             console.log(err);
         }

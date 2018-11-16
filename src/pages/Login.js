@@ -35,6 +35,7 @@ export default class Login extends Component {
                 password: password.value
             }));
             localStorage.setItem('AUTH_TOKEN', data);
+            this.props.history.push('/');
         } catch (err) {
             console.log(err);
         }

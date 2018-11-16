@@ -2,13 +2,17 @@
 include "../../cors.php";
 include "../../session.php";
 include "../../connect_mysql.php";
+include "../../jwt.php";
 include "../../protected_session.php";
 
 if ($_POST["COMMENT_DATA"] && $_POST['AUTH_TOKEN'] && $_POST['ARTICLE_ID']) {
 
     $comment_data = $_POST["COMMENT_DATA"];
     $article_id = $_POST["ARTICLE_ID"];
-    $user_id = json_decode(base64_decode($_POST['AUTH_TOKEN']))->user_id;
+    $token = $_POST['AUTH_TOKEN'];
+    $token_data = explode('.', $token);
+    $payloadDecoded = base64UrlDecode($token_data[1]);
+    $user_id = json_decode($payloadDecoded)->user_id;
 
 
     try {
