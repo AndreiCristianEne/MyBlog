@@ -27,6 +27,10 @@ if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avata
 
     $email = $_POST["email"];
     $password = $_POST["password"];
+    $options = [
+        'cost' => 12
+    ];
+    $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
     $username = $_POST["username"];
 
 //    unique user id for the DB
@@ -43,7 +47,7 @@ if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avata
         $stmt = $conn->prepare("INSERT INTO users (username, email, password, avatar_path, user_id)
     VALUES (:username, :email, :password, :avatar_path, :user_id)");
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':password', $password_hash);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':avatar_path', $avatar_path);
         $stmt->bindParam(':user_id', $user_id);

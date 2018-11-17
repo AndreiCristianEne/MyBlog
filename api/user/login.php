@@ -10,14 +10,17 @@ if ($_POST["email"] && $_POST["password"]) {
     $password = $_POST["password"];
 
     try {
-        $stmt = $conn->prepare("SELECT user_id FROM users WHERE email = :email AND password = :password LIMIT 1");
-        $stmt->bindParam(':password', $password);
+        $stmt = $conn->prepare("SELECT password, user_id FROM users WHERE email = :email LIMIT 1");
         $stmt->bindParam(':email', $email);
 
         $stmt->execute();
-
         $result = $stmt->fetchAll();
+
         foreach ($result as $user) {
+            if (!password_verify($password, $user['password'])) {
+                header("COULD NOT AUTHENTICATE", true, 400);
+                exit();
+            }
             $header = [
                 "alg" => "HS256",
                 "typ" => "JWT"
