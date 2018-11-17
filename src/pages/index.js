@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import Article from '../components/Article'
-import axios from 'axios'
+import React, {Component} from 'react';
+import Article from '../components/Article';
+import Menu from '../components/Menu';
+import axios from 'axios';
 
 export default class Index extends Component {
 
@@ -9,7 +10,7 @@ export default class Index extends Component {
         articles: []
     };
 
-    async componentWillMount () {
+    async componentWillMount() {
         try {
             const {data} = await axios.get('http://localhost:8888/api/article/get.php');
             this.setState({loading: false, articles: data});
@@ -18,13 +19,16 @@ export default class Index extends Component {
         }
     }
 
-    render () {
+    render() {
         const {loading, articles} = this.state;
 
         return (
             <div className="section">
                 <div className="columns">
-                    <div className="column is-4 is-offset-4">
+                    <div className="column">
+                        <Menu/>
+                    </div>
+                    <div className="column">
                         {loading && <h1>Loading</h1>}
                         {
                             !loading &&
