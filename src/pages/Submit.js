@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Editor from '../components/Editor';
+import {Redirect} from 'react-router-dom';
 import {convertToRaw} from 'draft-js'
 import qs from 'qs';
 import axios from 'axios';
@@ -17,8 +18,23 @@ export default class Submit extends Component {
             value: '',
             touched: '',
             valid: false,
-        }
+        },
+        shouldChangePassword: false
     };
+
+    async componentWillMount() {
+        try {
+            await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
+                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+            })).then(response => {
+                if (response.status === 200 && !response.data) {
+                    this.setState({shouldChangePassword: true});
+                }
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     async saveArticle() {
         const {title, description} = this.state;
@@ -52,10 +68,11 @@ export default class Submit extends Component {
     }
 
     render() {
-        const {title, description} = this.state;
+        const {title, description, shouldChangePassword} = this.state;
 
         return (
-            <div className="section">
+            shouldChangePassword ? <Redirect to="/change-password"/> :
+                <div className="section">
                 <div className="columns">
                     <div className="column is-3 is-offset-1">
                         <div className="field">

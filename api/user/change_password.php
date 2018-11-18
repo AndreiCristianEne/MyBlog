@@ -55,7 +55,7 @@ if ($_POST["newPassword"] && $_POST["confirmPassword"] && $_POST["currentPasswor
             ];
             $password_hash = password_hash($newPassword, PASSWORD_BCRYPT, $options);
             try {
-                $stmt = $conn->prepare("UPDATE users SET password =:password_hash WHERE user_id = :user_id");
+                $stmt = $conn->prepare("UPDATE users SET password = :password_hash, forgot_password = 0 WHERE user_id = :user_id");
                 $stmt->bindParam(':password_hash', $password_hash);
                 $stmt->bindParam(':user_id', $user_id);
                 $stmt->execute();

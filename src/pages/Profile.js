@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import qs from 'qs';
+import {Redirect} from "react-router-dom";
 
 export default class Signup extends Component {
 
@@ -17,10 +18,22 @@ export default class Signup extends Component {
             value: '',
             touched: '',
             valid: false,
-        }
+        },
+        shouldChangePassword: false
     };
 
     async componentWillMount() {
+        try {
+            await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
+                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+            })).then(response => {
+                if (response.status === 200 && !response.data) {
+                    this.setState({shouldChangePassword: true});
+                }
+            });
+        } catch (err) {
+            console.log(err);
+        }
         try {
             const {data} = await axios.post('http://localhost:8888/api/user/get_user.php', qs.stringify({
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
@@ -45,7 +58,7 @@ export default class Signup extends Component {
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
             })).then(response => {
                 if (response.status === 200) {
-                    window.location.href = '/';
+                    this.props.history.push('/');
                 }
             });
         } catch (err) {
@@ -68,9 +81,10 @@ export default class Signup extends Component {
 
 
     render() {
-        const {email, avatar, username} = this.state;
+        const {email, avatar, username, shouldChangePassword} = this.state;
 
         return (
+            shouldChangePassword ? <Redirect to="/change-password"/> :
             <div className="section">
                 <div className="columns">
                     <div className="column is-4 is-offset-4">

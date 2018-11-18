@@ -3,6 +3,7 @@ import sanitizeHtml from 'sanitize-html';
 import draftToHtml from "draftjs-to-html";
 import axios from 'axios';
 import qs from 'qs';
+import {Redirect} from "react-router-dom";
 
 export default class Article extends Component {
 
@@ -15,7 +16,8 @@ export default class Article extends Component {
             comment: {
                 touched: false,
                 value: props.isLoggedIn ? '' : 'You cannot comment if you are not logged in'
-            }
+            },
+            shouldChangePassword: false
         };
     }
 
@@ -48,6 +50,17 @@ export default class Article extends Component {
     }
 
     async componentWillMount() {
+        try {
+            await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
+                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+            })).then(response => {
+                if (response.status === 200 && !response.data) {
+                    this.setState({shouldChangePassword: true});
+                }
+            });
+        } catch (err) {
+            console.log(err);
+        }
         const {id} = this.props.match.params;
         try {
             const {data} = await axios.get(`http://localhost:8888/api/article/get_one.php?id=${id}`);
@@ -58,10 +71,11 @@ export default class Article extends Component {
     }
 
     render() {
-        const {loading, article, comment} = this.state;
+        const {loading, article, comment, shouldChangePassword} = this.state;
         const {isLoggedIn} = this.props;
 
         return (
+            shouldChangePassword ? <Redirect to="/change-password"/> :
             <div className="section">
                 {loading && <p>loading</p>}
                 {

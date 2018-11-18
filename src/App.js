@@ -7,13 +7,15 @@ import Signup from './pages/Signup';
 import Home from './pages/index';
 import Submit from './pages/Submit';
 import Article from './pages/Article';
-import Profile from './components/Profile'
+import Profile from './pages/Profile'
 import ChangePassword from './components/ChangePassword'
+import ForgotPassword from './pages/ForgotPassword'
 
 import protectedPage from './components/Protected';
 
 const SubmitPage = protectedPage(Submit, true);
 const ArticlePage = protectedPage(Article, false);
+const ProfilePage = protectedPage(Profile, true);
 
 export const isLoggedIn = () => {
     let token = window.localStorage.getItem('AUTH_TOKEN')
@@ -35,8 +37,9 @@ class App extends Component {
                 <Route path="/signup" component={Signup}/>
                 <Route path="/submit" component={SubmitPage}/>
                 <Route path="/article/:id" component={ArticlePage}/>
-                <Route path="/profile" component={Profile}/>
+                <Route path="/profile" component={ProfilePage}/>
                 <Route path="/change-password" component={ChangePassword}/>
+                <Route path="/forgot-password" component={ForgotPassword}/>
                 <Route path="/" exact component={Home}/>
 
             </div>
