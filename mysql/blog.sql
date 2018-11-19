@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2018 at 04:51 PM
+-- Generation Time: Nov 19, 2018 at 02:22 PM
 -- Server version: 10.1.36-MariaDB
 -- PHP Version: 5.6.38
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `description` tinytext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `articles_id_uindex` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 --
 -- RELATIONSHIPS FOR TABLE `articles`:
@@ -58,7 +58,7 @@ TRUNCATE TABLE `articles`;
 INSERT INTO `articles` (`id`, `article_data`, `user_id`, `title`, `description`) VALUES
 (14, '{\"blocks\":[{\"key\":\"ahftu\",\"text\":\"React JS boilerplates used to be difficult to come by, and even more difficult to implement. \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"80h51\",\"text\":\"Fortunately though, there now exists create-react-app.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":18,\"style\":\"BOLD\"},{\"offset\":37,\"length\":16,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"al6v2\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"eh3v0\",\"text\":\"How does it work ? It\'s simple, just do npm install -g create-react-app to install the tool globaly and then run create-react-app demo.  \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":40,\"length\":32,\"style\":\"CODE\"},{\"offset\":113,\"length\":24,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}', '5bccc0f72ad2f', 'Hello React', NULL),
 (16, '{\"blocks\":[{\"key\":\"dg7fa\",\"text\":\"Well ... I lied, this article is not that awesome ... !!awesome\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":54,\"length\":9,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}', '5bccc0f72ad2f', 'This is my awesome article', ''),
-(17, '{\"blocks\":[{\"key\":\"8serd\",\"text\":\"So, you want to do types in Javascript. It\'s never been easier. \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"fpcdu\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"e47n\",\"text\":\"Just do npm install --save-dev flow and configure your flow configuration. \",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":8,\"length\":28,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}', '5bccc0f72ad2f', 'Javascript types', 'Javascript types are pretty damn awesome.');
+(25, '{\"blocks\":[{\"key\":\"6dso5\",\"text\":\"dfdfdsfsdf\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}', '5bf087cfdf6bc', 'Test', 'sdfdsf');
 
 -- --------------------------------------------------------
 
@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(250) NOT NULL,
   `user_id` varchar(50) NOT NULL,
   `forgot_password` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `role` varchar(50) NOT NULL DEFAULT 'user',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_user_id_uindex` (`user_id`),
   UNIQUE KEY `users_email_uindex` (`email`)
@@ -131,8 +132,9 @@ TRUNCATE TABLE `users`;
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `avatar_path`, `password`, `user_id`, `forgot_password`) VALUES
-(9, 'Teodor', 'teo5@abv.bg', '5bf087cfdf6bc.jpg', '$2y$12$4801RYRXWjxCtw5ONbKNGuifRezs2lO69oFx4giUtjggSKLDXcv1K', '5bf087cfdf6bc', 0);
+INSERT INTO `users` (`id`, `username`, `email`, `avatar_path`, `password`, `user_id`, `forgot_password`, `role`) VALUES
+(2, 'Andrei Ungureanu', 'andrei@gmail.com', '5bccc0f72ad2f.jpg', '$2y$12$W7ExeVXow3.IrhLdCHWLHOMnH7FaZ9q4zMrBbZsce8fKICiox6Aaq', '5bccc0f72ad2f', 0, 'admin'),
+(9, 'Teodor', 'teo9696@abv.bg', '5bf087cfdf6bc.jpg', '$2y$12$W7ExeVXow3.IrhLdCHWLHOMnH7FaZ9q4zMrBbZsce8fKICiox6Aaq', '5bf087cfdf6bc', 0, 'admin');
 
 --
 -- Constraints for dumped tables
@@ -144,6 +146,41 @@ INSERT INTO `users` (`id`, `username`, `email`, `avatar_path`, `password`, `user
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_articles_id_fk` FOREIGN KEY (`article_id`) REFERENCES `articles` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `comments_users_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+
+--
+-- Metadata
+--
+USE `phpmyadmin`;
+
+--
+-- Metadata for table articles
+--
+-- Error reading data for table phpmyadmin.pma__column_info: #1100 - Table 'pma__column_info' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__table_uiprefs: #1100 - Table 'pma__table_uiprefs' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__tracking: #1100 - Table 'pma__tracking' was not locked with LOCK TABLES
+
+--
+-- Metadata for table comments
+--
+-- Error reading data for table phpmyadmin.pma__column_info: #1100 - Table 'pma__column_info' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__table_uiprefs: #1100 - Table 'pma__table_uiprefs' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__tracking: #1100 - Table 'pma__tracking' was not locked with LOCK TABLES
+
+--
+-- Metadata for table users
+--
+-- Error reading data for table phpmyadmin.pma__column_info: #1100 - Table 'pma__column_info' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__table_uiprefs: #1100 - Table 'pma__table_uiprefs' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__tracking: #1100 - Table 'pma__tracking' was not locked with LOCK TABLES
+
+--
+-- Metadata for database blog
+--
+-- Error reading data for table phpmyadmin.pma__bookmark: #1100 - Table 'pma__bookmark' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__relation: #1100 - Table 'pma__relation' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__savedsearches: #1100 - Table 'pma__savedsearches' was not locked with LOCK TABLES
+-- Error reading data for table phpmyadmin.pma__central_columns: #1100 - Table 'pma__central_columns' was not locked with LOCK TABLES
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 

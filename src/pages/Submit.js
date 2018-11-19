@@ -47,7 +47,11 @@ export default class Submit extends Component {
                 article_data: data,
                 title: title.value,
                 description: description.value,
-            }));
+            })).then(response => {
+                if (response.status === 200) {
+                    this.props.history.push('/');
+                }
+            });
         } catch (err) {
             console.log(err);
         }
