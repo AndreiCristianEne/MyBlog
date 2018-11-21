@@ -2,9 +2,11 @@
 include "../../cors.php";
 include "../../session.php";
 include "../../connect_mysql.php";
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
-require '../PHPMailer/src/Exception.php';
+require '../../vendor/autoload.php';
+
+require '../../vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require '../../vendor/phpmailer/phpmailer/src/SMTP.php';
+require '../../vendor/phpmailer/phpmailer/src/Exception.php';
 use PHPMailer\PHPMailer\PHPMailer;
 
 if ($_POST["email"]) {
@@ -61,9 +63,7 @@ if ($_POST["email"]) {
                     $mail->send();
                     exit();
                 } catch (Exception $e) {
-                    echo $e;
                     header("FAILED OPERATION", false, 500);
-                    echo 1;
                     exit();
                 }
 
@@ -73,7 +73,6 @@ if ($_POST["email"]) {
         exit();
     } catch (Exception $e) {
         header("FAILED OPERATION", false, 500);
-        echo 2;
         exit();
     }
 

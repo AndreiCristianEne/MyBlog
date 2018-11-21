@@ -36,7 +36,6 @@ if ($_POST['AUTH_TOKEN']) {
             header("NOT FOUND", true, 404);
             exit();
         }
-        exit();
     } catch (Exception $e) {
         header("FAILED OPERATION", false, 500);
         exit();

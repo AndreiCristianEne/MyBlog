@@ -15,36 +15,44 @@ export default class Index extends Component {
     };
 
     async componentWillMount() {
-        try {
-            const {data} = await axios.post('http://localhost:8888/api/user/is_admin.php', qs.stringify({
-                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
-            }))
-            this.setState({isAdmin: data});
-        } catch (err) {
-            console.log(err)
+
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+        if (window.localStorage.getItem("AUTH_TOKEN")) {
+            try {
+                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}api/user/is_admin.php`, qs.stringify({
+                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+                }))
+                this.setState({isAdmin: data});
+            } catch (err) {
+                console.log(err)
+            }
+            try {
+                if (window.localStorage.getItem("AUTH_TOKEN")) {
+                    await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
+                        AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+                    })).then(response => {
+                        if (response.status === 200 && !response.data) {
+                            this.setState({shouldChangePassword: true});
+                        }
+
+                    });
+                }
+            } catch (err) {
+                console.log(err);
+            }
         }
         try {
-            const {data} = await axios.post('http://localhost:8888/api/article/get-my-articles.php', qs.stringify({
+            const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/article/get-my-articles.php`, qs.stringify({
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
             }))
             this.setState({loading: false, articles: data});
         } catch (err) {
             console.log(err)
         }
-        try {
-            if (window.localStorage.getItem("AUTH_TOKEN")) {
-                await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
-                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
-                })).then(response => {
-                    if (response.status === 200 && !response.data) {
-                        this.setState({shouldChangePassword: true});
-                    }
 
-                });
-            }
-        } catch (err) {
-            console.log(err);
-        }
+
     }
 
     renderArticles(articles) {

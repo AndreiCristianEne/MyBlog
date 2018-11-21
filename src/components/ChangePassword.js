@@ -25,19 +25,24 @@ export default class ChangePassword extends Component {
     async changePassword() {
         const {currentPassword, newPassword, confirmPassword} = this.state;
 
-        try {
-            await axios.post('http://localhost:8888/api/user/change_password.php', qs.stringify({
-                currentPassword: currentPassword.value,
-                newPassword: newPassword.value,
-                confirmPassword: confirmPassword.value,
-                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
-            })).then(response => {
-                if (response.status === 200) {
-                    window.location.href = '/';
-                }
-            });
-        } catch (err) {
-            console.log(err);
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+        if (window.localStorage.getItem("AUTH_TOKEN")) {
+            try {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/user/change_password.php`, qs.stringify({
+                    currentPassword: currentPassword.value,
+                    newPassword: newPassword.value,
+                    confirmPassword: confirmPassword.value,
+                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+                })).then(response => {
+                    if (response.status === 200) {
+                        window.location.href = '/';
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 

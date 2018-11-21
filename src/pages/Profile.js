@@ -23,36 +23,46 @@ export default class Signup extends Component {
     };
 
     async componentWillMount() {
-        try {
-            await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
-                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
-            })).then(response => {
-                if (response.status === 200 && !response.data) {
-                    this.setState({shouldChangePassword: true});
-                }
-            });
-        } catch (err) {
-            console.log(err);
+
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
         }
-        try {
-            const {data} = await axios.post('http://localhost:8888/api/user/get_user.php', qs.stringify({
-                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
-            }));
-            this.setState({
-                email: {value: data.email, touched: '', valid: true},
-                avatar: {value: data.avatar_path},
-                username: {value: data.username, touched: '', valid: true}
-            })
-        } catch (err) {
-            console.log(err);
+        if (window.localStorage.getItem("AUTH_TOKEN")) {
+            try {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
+                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+                })).then(response => {
+                    if (response.status === 200 && !response.data) {
+                        this.setState({shouldChangePassword: true});
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
+            try {
+                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/user/get_user.php`, qs.stringify({
+                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+                }));
+                this.setState({
+                    email: {value: data.email, touched: '', valid: true},
+                    avatar: {value: data.avatar_path},
+                    username: {value: data.username, touched: '', valid: true}
+                })
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 
     async updateProfileData() {
         const {email, username} = this.state;
 
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+
         try {
-            await axios.post('http://localhost:8888/api/user/update.php', qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/update.php`, qs.stringify({
                 email: email.value,
                 username: username.value,
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
@@ -100,7 +110,7 @@ export default class Signup extends Component {
                             <div className="media">
                                 <div className="media-left">
                                     <div className="image is-96x96">
-                                        <img src={`http://localhost:8888/api/public/images/${avatar.value}`}/>
+                                        <img src={`${process.env.REACT_APP_API_URL}/api/public/images/${avatar.value}`}/>
                                     </div>
                                 </div>
                             </div>

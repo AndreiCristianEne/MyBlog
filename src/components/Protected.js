@@ -14,8 +14,13 @@ export default (BaseComponent, restricted) => {
 
         async componentWillMount() {
             const token = localStorage.getItem('AUTH_TOKEN');
+
+            if (!process.env.REACT_APP_API_URL) {
+                throw new Error('REACT_APP_API_URL missing')
+            }
+
             try {
-                await axios.post('http://localhost:8888/index.php', qs.stringify({AUTH_TOKEN: token}));
+                await axios.post(`${process.env.REACT_APP_API_URL}/index.php`, qs.stringify({AUTH_TOKEN: token}));
                 this.setState({loading: false, loggedIn: true, authToken: token});
             } catch (err) {
                 console.log(err);

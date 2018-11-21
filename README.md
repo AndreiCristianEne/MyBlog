@@ -5,7 +5,8 @@
 * Make the server run on 8888
 * Configure mysql to user root and password root
 * Run `npm install`
+* Run `composer install`
 
 *Development*
-* Run `npm start`
+* Run `REACT_APP_API_URL=http://localhost:8888 npm start`
 * React app will run on localhost:3000

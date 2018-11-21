@@ -15,8 +15,12 @@ export default class ForgotPassword extends Component {
     async forgotPassword() {
         const {email} = this.state;
 
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+
         try {
-            await axios.post('http://localhost:8888/api/user/forgot_password.php', qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/forgot_password.php`, qs.stringify({
                 email: email.value
             })).then(response => {
                 if (response.status === 200) {
@@ -34,7 +38,6 @@ export default class ForgotPassword extends Component {
     }
 
 
-
     render() {
         const {email} = this.state;
 
@@ -47,7 +50,8 @@ export default class ForgotPassword extends Component {
                                 <div className="control">
                                     <div className="content">
                                         <h4>Forgot Password</h4>
-                                        <p>Here you can recover your password. Please provide your email address, so we can send you a temporary password!</p>
+                                        <p>Here you can recover your password. Please provide your email address, so we
+                                            can send you a temporary password!</p>
                                     </div>
                                 </div>
                             </div>
