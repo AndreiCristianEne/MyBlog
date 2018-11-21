@@ -10,14 +10,17 @@ if ($_POST["email"] && $_POST["password"]) {
     $password = $_POST["password"];
 
     try {
-        $stmt = $conn->prepare("SELECT user_id FROM users WHERE email = :email AND password = :password LIMIT 1");
-        $stmt->bindParam(':password', $password);
+        $stmt = $conn->prepare("SELECT password, user_id, forgot_password FROM users WHERE email = :email LIMIT 1");
         $stmt->bindParam(':email', $email);
 
         $stmt->execute();
-
         $result = $stmt->fetchAll();
+
         foreach ($result as $user) {
+            if (!password_verify($password, $user['password'])) {
+                header("COULD NOT AUTHENTICATE", true, 400);
+                exit();
+            }
             $header = [
                 "alg" => "HS256",
                 "typ" => "JWT"
@@ -27,8 +30,17 @@ if ($_POST["email"] && $_POST["password"]) {
                 "user_id" => $user['user_id']
             ];
 
+            $requestChangePassword = false;
+
+            if ($user['forgot_password'] == 1) {
+                $requestChangePassword = true;
+            }
+
             $token = generateJWT('sha256', $header, $payload, $secret);
-            echo $token;
+            $response = new stdClass();
+            $response->token = $token;
+            $response->requestChangePassword = $requestChangePassword;
+            echo json_encode($response);
             exit();
         }
 

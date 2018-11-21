@@ -24,7 +24,9 @@ export default class Index extends Component {
             console.log(err)
         }
         try {
-            const {data} = await axios.get('http://localhost:8888/api/article/get.php');
+            const {data} = await axios.post('http://localhost:8888/api/article/get-my-articles.php', qs.stringify({
+                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+            }))
             this.setState({loading: false, articles: data});
         } catch (err) {
             console.log(err)
@@ -47,7 +49,7 @@ export default class Index extends Component {
 
     renderArticles(articles) {
         if (!articles.length) {
-            return (<div>We're sorry - no articles were found!</div>)
+            return (<div>We're sorry - you don't have any posted articles!</div>)
         }
         return articles.map((article, key) => {
             return (
@@ -60,24 +62,25 @@ export default class Index extends Component {
 
         })
     }
+
     render() {
         const {loading, articles, shouldChangePassword} = this.state;
 
         return (
             shouldChangePassword ? <Redirect to="/change-password"/> :
-            <div className="section">
-                <div className="columns">
-                    <div className="column">
-                        <Menu activeClass={'articles'}/>
-                    </div>
-                    <div className="column">
-                        {loading && <h1>Loading</h1>}
-                        {
-                            !loading && this.renderArticles(articles)
-                        }
+                <div className="section">
+                    <div className="columns">
+                        <div className="column">
+                            <Menu activeClass={'my-articles'}/>
+                        </div>
+                        <div className="column">
+                            {loading && <h1>Loading</h1>}
+                            {
+                                !loading && this.renderArticles(articles)
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
         )
     }
 

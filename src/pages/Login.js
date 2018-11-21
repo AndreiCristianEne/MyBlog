@@ -33,9 +33,14 @@ export default class Login extends Component {
             const {data} = await axios.post('http://localhost:8888/api/user/login.php', qs.stringify({
                 email: email.value,
                 password: password.value
-            }));
-            localStorage.setItem('AUTH_TOKEN', data);
-            this.props.history.push('/');
+            })).then(response => {
+                if (response.status === 200 && !response.data.requestChangePassword) {
+                    window.location.href = '/';
+                } else {
+                    window.location.href = '/change-password';
+                }
+                localStorage.setItem('AUTH_TOKEN', response.data.token);
+            });
         } catch (err) {
             console.log(err);
         }
@@ -73,6 +78,14 @@ export default class Login extends Component {
                                            value={password.value}
                                            onChange={e => this.handlePasswordChange(e.target.value)}
                                            type="password"/>
+                                </div>
+                            </div>
+                            <div className="field">
+                                <div className="control">
+                                    <div className="content">
+                                        <p><Link
+                                            to="forgot-password">Forgot Password?</Link></p>
+                                    </div>
                                 </div>
                             </div>
                             <div className="field">

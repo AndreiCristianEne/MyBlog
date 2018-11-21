@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import qs from 'qs';
+import {Redirect} from "react-router-dom";
 
 export default class Signup extends Component {
 
     state = {
-        password: {
-            value: '',
-            touched: '',
-            valid: false,
-        },
         email: {
             value: '',
             touched: '',
@@ -22,21 +18,47 @@ export default class Signup extends Component {
             value: '',
             touched: '',
             valid: false,
-        }
+        },
+        shouldChangePassword: false
     };
 
-    async signUp() {
-        const {email, password, avatar, username} = this.state;
+    async componentWillMount() {
+        try {
+            await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
+                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+            })).then(response => {
+                if (response.status === 200 && !response.data) {
+                    this.setState({shouldChangePassword: true});
+                }
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        try {
+            const {data} = await axios.post('http://localhost:8888/api/user/get_user.php', qs.stringify({
+                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+            }));
+            this.setState({
+                email: {value: data.email, touched: '', valid: true},
+                avatar: {value: data.avatar_path},
+                username: {value: data.username, touched: '', valid: true}
+            })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async updateProfileData() {
+        const {email, username} = this.state;
 
         try {
-            await axios.post('http://localhost:8888/api/user/signup.php', qs.stringify({
+            await axios.post('http://localhost:8888/api/user/update.php', qs.stringify({
                 email: email.value,
-                password: password.value,
-                avatar: avatar.value,
-                username: username.value
+                username: username.value,
+                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
             })).then(response => {
                 if (response.status === 200) {
-                    window.location.href = '/';
+                    this.props.history.push('/');
                 }
             });
         } catch (err) {
@@ -57,23 +79,12 @@ export default class Signup extends Component {
         this.setState({username: {value: username, touched: true, valid: username.length > 4}});
     }
 
-    handleAvatarUpload(e) {
-        const reader = new FileReader();
-        const file = e.target.files[0];
-
-        reader.onload = data => {
-            if (data.target.result.indexOf('jpeg') > -1) {
-                this.setState({avatar: {value: data.target.result}});
-            }
-        };
-
-        reader.readAsDataURL(file);
-    }
 
     render() {
-        const {email, password, avatar, username} = this.state;
+        const {email, avatar, username, shouldChangePassword} = this.state;
 
         return (
+            shouldChangePassword ? <Redirect to="/change-password"/> :
             <div className="section">
                 <div className="columns">
                     <div className="column is-4 is-offset-4">
@@ -81,28 +92,22 @@ export default class Signup extends Component {
                             <div className="field">
                                 <div className="controk">
                                     <div className="content">
-                                        <h4>Signup</h4>
-                                        <p>Please fill-in the fields below in order to register.</p>
+                                        <h4>Profile</h4>
+                                        <p>Here you can update your profile data if desired. </p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="field">
-                                    <div className="file is-boxed">
-                                        <label className="file-label">
-                                            <input className="file-input" type="file" onChange={e => this.handleAvatarUpload(e)}/>
-                                            <span className="file-cta">
-                                                <span className="file-icon">
-                                                    <i className="fas fa-cloud-upload-alt"/>
-                                                </span>
-                                                 <span className="file-label">
-                                                    Avatar upload
-                                                 </span>
-                                            </span>
-                                        </label>
+                            <div className="media">
+                                <div className="media-left">
+                                    <div className="image is-96x96">
+                                        <img src={`http://localhost:8888/api/public/images/${avatar.value}`}/>
                                     </div>
+                                </div>
                             </div>
+
                             <div className="field">
                                 <div className="control">
+                                    Name:
                                     <input placeholder="Name"
                                            className={`input ${username.touched && !username.valid && 'is-danger'}`}
                                            onChange={e => this.handleUsernameChange(e.target.value)}
@@ -111,26 +116,21 @@ export default class Signup extends Component {
                             </div>
                             <div className="field">
                                 <div className="control">
+                                    Email:
                                     <input placeholder="Email" value={email.value}
                                            className={`input ${email.touched && !email.valid && 'is-danger'}`}
                                            onChange={e => this.handleEmailChange(e.target.value)}
                                     />
                                 </div>
                             </div>
+
                             <div className="field">
-                                <div className="control">
-                                    <input placeholder="Password" value={password.value}
-                                           className={`input ${password.touched && !password.valid && 'is-danger'}`}
-                                           type="password"
-                                           onChange={e => this.handlePasswordChange(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                            <div className="field">
-                                <div className="control">
-                                    <button className="button" onClick={() => this.signUp()}
-                                            disabled={!email.valid || !password.valid || !username.valid || !avatar.value}>Sign
-                                        Up
+                                <div className="control buttons">
+                                    <button className="button" onClick={() => this.props.history.push('/')}>
+                                        Cancel
+                                    </button>
+                                    <button className="button" onClick={() => this.updateProfileData()}
+                                            disabled={!email.valid || !username.valid}>Update
                                     </button>
                                 </div>
                             </div>
@@ -138,6 +138,7 @@ export default class Signup extends Component {
                     </div>
                 </div>
             </div>
+
         )
     }
 
