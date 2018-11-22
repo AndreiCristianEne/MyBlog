@@ -23,8 +23,13 @@ export default class Submit extends Component {
     };
 
     async componentWillMount() {
+
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+
         try {
-            await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
             })).then(response => {
                 if (response.status === 200 && !response.data) {
@@ -41,19 +46,25 @@ export default class Submit extends Component {
 
         const editorState = this.editor.state.editorState;
         const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-        try {
-            await axios.post('http://localhost:8888/api/article/add.php', qs.stringify({
-                AUTH_TOKEN: this.props.authToken,
-                article_data: data,
-                title: title.value,
-                description: description.value,
-            })).then(response => {
-                if (response.status === 200) {
-                    this.props.history.push('/');
-                }
-            });
-        } catch (err) {
-            console.log(err);
+
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+        if (window.localStorage.getItem("AUTH_TOKEN")) {
+            try {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/article/add.php`, qs.stringify({
+                    AUTH_TOKEN: this.props.authToken,
+                    article_data: data,
+                    title: title.value,
+                    description: description.value,
+                })).then(response => {
+                    if (response.status === 200) {
+                        this.props.history.push('/');
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
 

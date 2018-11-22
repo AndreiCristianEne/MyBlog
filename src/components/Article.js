@@ -11,28 +11,39 @@ export default class Article extends Component {
 
     async componentWillMount() {
         try {
-            const {data} = await axios.post('http://localhost:8888/api/user/is_author.php', qs.stringify({
-                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN"),
-                id: this.props.article.id
-            }))
-            this.setState({isAuthor: data});
+            if (!process.env.REACT_APP_API_URL) {
+                throw new Error('REACT_APP_API_URL missing')
+            }
+            if (window.localStorage.getItem("AUTH_TOKEN")) {
+                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_author.php`, qs.stringify({
+                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN"),
+                    id: this.props.article.id
+                }))
+                this.setState({isAuthor: data});
+            }
+
         } catch (err) {
             console.log(err)
         }
     }
 
     async deleteArticle(id) {
-        try {
-            await axios.post('http://localhost:8888/api/article/delete.php', qs.stringify({
-                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN"),
-                id: id
-            })).then(response => {
-                if (response.status === 200) {
-                    window.location.href = '/';
-                }
-            });
-        } catch (err) {
-            console.log(err);
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+        if (window.localStorage.getItem("AUTH_TOKEN")) {
+            try {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/article/delete.php`, qs.stringify({
+                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN"),
+                    id: id
+                })).then(response => {
+                    if (response.status === 200) {
+                        window.location.href = '/';
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
         }
     }
     render() {

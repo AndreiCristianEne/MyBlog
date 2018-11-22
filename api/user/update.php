@@ -25,7 +25,6 @@ if ($_POST["email"] && $_POST['AUTH_TOKEN'] && $_POST['username']) {
         $stmt->execute();
         exit();
     } catch (Exception $e) {
-        echo $e;
         header("FAILED OPERATION", false, 500);
         exit();
     }

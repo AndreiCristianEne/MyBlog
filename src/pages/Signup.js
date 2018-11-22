@@ -28,8 +28,12 @@ export default class Signup extends Component {
     async signUp() {
         const {email, password, avatar, username} = this.state;
 
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+
         try {
-            await axios.post('http://localhost:8888/api/user/signup.php', qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/signup.php`, qs.stringify({
                 email: email.value,
                 password: password.value,
                 avatar: avatar.value,

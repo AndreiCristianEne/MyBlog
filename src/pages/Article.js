@@ -35,9 +35,14 @@ export default class Article extends Component {
             AUTH_TOKEN: this.props.authToken,
             ARTICLE_ID: article.id
         });
+
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+
         try {
-            await axios.post('http://localhost:8888/api/article/comment.php', data);
-            const response = await axios.get(`http://localhost:8888/api/article/fetch_comments.php?id=${article.id}`);
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/article/comment.php`, data);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/article/fetch_comments.php?id=${article.id}`);
             this.setState({article: {...article, comments: response.data},
                 comment: {
                     touched: false,
@@ -50,24 +55,30 @@ export default class Article extends Component {
     }
 
     async componentWillMount() {
-        try {
-            await axios.post('http://localhost:8888/api/user/is_password_resetted.php', qs.stringify({
-                AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
-            })).then(response => {
-                if (response.status === 200 && !response.data) {
-                    this.setState({shouldChangePassword: true});
-                }
-            });
-        } catch (err) {
-            console.log(err);
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
         }
-        const {id} = this.props.match.params;
-        try {
-            const {data} = await axios.get(`http://localhost:8888/api/article/get_one.php?id=${id}`);
-            this.setState({article: data, loading: false})
-        } catch (err) {
-            console.log(err);
+        if (window.localStorage.getItem("AUTH_TOKEN")) {
+            try {
+                await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
+                    AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
+                })).then(response => {
+                    if (response.status === 200 && !response.data) {
+                        this.setState({shouldChangePassword: true});
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            }
         }
+            const {id} = this.props.match.params;
+            try {
+                const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/article/get_one.php?id=${id}`);
+                this.setState({article: data, loading: false})
+            } catch (err) {
+                console.log(err);
+            }
+
     }
 
     render() {
@@ -92,7 +103,7 @@ export default class Article extends Component {
                             <div className="media">
                                 <div className="media-left">
                                     <div className="image is-64x64">
-                                        <img src={`http://localhost:8888/api/public/images/${article.avatar_path}`}/>
+                                        <img src={`${process.env.REACT_APP_API_URL}/api/public/images/${article.avatar_path}`}/>
                                     </div>
                                 </div>
                                 <div className="media-content">

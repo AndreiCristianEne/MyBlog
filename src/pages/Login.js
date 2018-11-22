@@ -29,8 +29,13 @@ export default class Login extends Component {
 
     async login() {
         const {password, email} = this.state;
+
+        if (!process.env.REACT_APP_API_URL) {
+            throw new Error('REACT_APP_API_URL missing')
+        }
+
         try {
-            const {data} = await axios.post('http://localhost:8888/api/user/login.php', qs.stringify({
+            const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/user/login.php`, qs.stringify({
                 email: email.value,
                 password: password.value
             })).then(response => {

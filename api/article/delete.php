@@ -31,7 +31,6 @@ if ($_POST["id"] && $_POST['AUTH_TOKEN']) {
                        $stmt->execute();
 
                    } catch (Exception $e) {
-                       echo $e;
                        header("FAILED OPERATION", false, 500);
                        exit();
                    }
@@ -42,7 +41,6 @@ if ($_POST["id"] && $_POST['AUTH_TOKEN']) {
             exit();
         }
     } catch (Exception $e) {
-        echo 2;
         header("FAILED OPERATION", false, 500);
         exit();
     }
