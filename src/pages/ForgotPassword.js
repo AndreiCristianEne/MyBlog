@@ -20,7 +20,7 @@ export default class ForgotPassword extends Component {
         }
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/forgot_password.php`, qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/user/forgot_password.php`, qs.stringify({
                 email: email.value
             })).then(response => {
                 if (response.status === 200) {

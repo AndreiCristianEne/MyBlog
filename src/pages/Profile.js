@@ -29,7 +29,7 @@ export default class Signup extends Component {
         }
         if (window.localStorage.getItem("AUTH_TOKEN")) {
             try {
-                await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
+                await axios.post(`${process.env.REACT_APP_API_URL}/user/is_password_resetted.php`, qs.stringify({
                     AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
                 })).then(response => {
                     if (response.status === 200 && !response.data) {
@@ -40,7 +40,7 @@ export default class Signup extends Component {
                 console.log(err);
             }
             try {
-                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/user/get_user.php`, qs.stringify({
+                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/user/get_user.php`, qs.stringify({
                     AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
                 }));
                 this.setState({
@@ -62,7 +62,7 @@ export default class Signup extends Component {
         }
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/update.php`, qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/user/update.php`, qs.stringify({
                 email: email.value,
                 username: username.value,
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
@@ -110,7 +110,7 @@ export default class Signup extends Component {
                             <div className="media">
                                 <div className="media-left">
                                     <div className="image is-96x96">
-                                        <img src={`${process.env.REACT_APP_API_URL}/api/public/images/${avatar.value}`}/>
+                                        <img src={`${process.env.REACT_APP_API_URL}/public/images/${avatar.value}`}/>
                                     </div>
                                 </div>
                             </div>

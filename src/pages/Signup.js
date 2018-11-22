@@ -33,7 +33,7 @@ export default class Signup extends Component {
         }
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/signup.php`, qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/user/signup.php`, qs.stringify({
                 email: email.value,
                 password: password.value,
                 avatar: avatar.value,

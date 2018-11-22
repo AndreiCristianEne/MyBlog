@@ -29,7 +29,7 @@ export default class Submit extends Component {
         }
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
+            await axios.post(`${process.env.REACT_APP_API_URL}/user/is_password_resetted.php`, qs.stringify({
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
             })).then(response => {
                 if (response.status === 200 && !response.data) {
@@ -52,7 +52,7 @@ export default class Submit extends Component {
         }
         if (window.localStorage.getItem("AUTH_TOKEN")) {
             try {
-                await axios.post(`${process.env.REACT_APP_API_URL}/api/article/add.php`, qs.stringify({
+                await axios.post(`${process.env.REACT_APP_API_URL}/article/add.php`, qs.stringify({
                     AUTH_TOKEN: this.props.authToken,
                     article_data: data,
                     title: title.value,
