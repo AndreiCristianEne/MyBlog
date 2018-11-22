@@ -18,9 +18,13 @@ export default (BaseComponent, restricted) => {
             if (!process.env.REACT_APP_API_URL) {
                 throw new Error('REACT_APP_API_URL missing')
             }
+            let url = 'http://localhost:8888';
 
+            if (process.env.REACT_APP_API_URL === 'http://68.183.71.52:8888/api') {
+                url = 'http://68.183.71.52:8888'
+            }
             try {
-                await axios.post(`${process.env.REACT_APP_API_URL}/index.php`, qs.stringify({AUTH_TOKEN: token}));
+                await axios.post(`${url}/index.php`, qs.stringify({AUTH_TOKEN: token}));
                 this.setState({loading: false, loggedIn: true, authToken: token});
             } catch (err) {
                 console.log(err);
