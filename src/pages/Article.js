@@ -41,8 +41,8 @@ export default class Article extends Component {
         }
 
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/article/comment.php`, data);
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/article/fetch_comments.php?id=${article.id}`);
+            await axios.post(`${process.env.REACT_APP_API_URL}/article/comment.php`, data);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/article/fetch_comments.php?id=${article.id}`);
             this.setState({article: {...article, comments: response.data},
                 comment: {
                     touched: false,
@@ -60,7 +60,7 @@ export default class Article extends Component {
         }
         if (window.localStorage.getItem("AUTH_TOKEN")) {
             try {
-                await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
+                await axios.post(`${process.env.REACT_APP_API_URL}/user/is_password_resetted.php`, qs.stringify({
                     AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
                 })).then(response => {
                     if (response.status === 200 && !response.data) {
@@ -73,7 +73,7 @@ export default class Article extends Component {
         }
             const {id} = this.props.match.params;
             try {
-                const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/article/get_one.php?id=${id}`);
+                const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/article/get_one.php?id=${id}`);
                 this.setState({article: data, loading: false})
             } catch (err) {
                 console.log(err);
@@ -103,7 +103,7 @@ export default class Article extends Component {
                             <div className="media">
                                 <div className="media-left">
                                     <div className="image is-64x64">
-                                        <img src={`${process.env.REACT_APP_API_URL}/api/public/images/${article.avatar_path}`}/>
+                                        <img src={`${process.env.REACT_APP_API_URL}/public/images/${article.avatar_path}`}/>
                                     </div>
                                 </div>
                                 <div className="media-content">

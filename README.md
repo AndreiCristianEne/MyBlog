@@ -8,5 +8,5 @@
 * Run `composer install`
 
 *Development*
-* Run `REACT_APP_API_URL=http://localhost:8888 npm start`
+* Run `REACT_APP_API_URL=http://localhost:8888/api npm start`
 * React app will run on localhost:3000

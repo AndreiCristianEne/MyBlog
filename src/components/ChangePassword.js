@@ -30,7 +30,7 @@ export default class ChangePassword extends Component {
         }
         if (window.localStorage.getItem("AUTH_TOKEN")) {
             try {
-                await axios.post(`${process.env.REACT_APP_API_URL}/api/user/change_password.php`, qs.stringify({
+                await axios.post(`${process.env.REACT_APP_API_URL}/user/change_password.php`, qs.stringify({
                     currentPassword: currentPassword.value,
                     newPassword: newPassword.value,
                     confirmPassword: confirmPassword.value,

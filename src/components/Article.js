@@ -15,7 +15,7 @@ export default class Article extends Component {
                 throw new Error('REACT_APP_API_URL missing')
             }
             if (window.localStorage.getItem("AUTH_TOKEN")) {
-                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_author.php`, qs.stringify({
+                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/user/is_author.php`, qs.stringify({
                     AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN"),
                     id: this.props.article.id
                 }))
@@ -33,7 +33,7 @@ export default class Article extends Component {
         }
         if (window.localStorage.getItem("AUTH_TOKEN")) {
             try {
-                await axios.post(`${process.env.REACT_APP_API_URL}/api/article/delete.php`, qs.stringify({
+                await axios.post(`${process.env.REACT_APP_API_URL}/article/delete.php`, qs.stringify({
                     AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN"),
                     id: id
                 })).then(response => {

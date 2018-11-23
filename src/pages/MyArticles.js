@@ -21,7 +21,7 @@ export default class Index extends Component {
         }
         if (window.localStorage.getItem("AUTH_TOKEN")) {
             try {
-                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}api/user/is_admin.php`, qs.stringify({
+                const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/user/is_admin.php`, qs.stringify({
                     AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
                 }))
                 this.setState({isAdmin: data});
@@ -30,7 +30,7 @@ export default class Index extends Component {
             }
             try {
                 if (window.localStorage.getItem("AUTH_TOKEN")) {
-                    await axios.post(`${process.env.REACT_APP_API_URL}/api/user/is_password_resetted.php`, qs.stringify({
+                    await axios.post(`${process.env.REACT_APP_API_URL}/user/is_password_resetted.php`, qs.stringify({
                         AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
                     })).then(response => {
                         if (response.status === 200 && !response.data) {
@@ -44,7 +44,7 @@ export default class Index extends Component {
             }
         }
         try {
-            const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/article/get-my-articles.php`, qs.stringify({
+            const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/article/get-my-articles.php`, qs.stringify({
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
             }))
             this.setState({loading: false, articles: data});
