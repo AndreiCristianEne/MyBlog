@@ -29,6 +29,7 @@ export default class Submit extends Component {
         }
 
         try {
+            //request forgery ?
             await axios.post(`${process.env.REACT_APP_API_URL}/user/is_password_resetted.php`, qs.stringify({
                 AUTH_TOKEN: window.localStorage.getItem("AUTH_TOKEN")
             })).then(response => {
@@ -43,7 +44,7 @@ export default class Submit extends Component {
 
     async saveArticle() {
         const {title, description} = this.state;
-
+        //xss
         const editorState = this.editor.state.editorState;
         const data = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
 

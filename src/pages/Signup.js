@@ -54,7 +54,9 @@ export default class Signup extends Component {
     }
 
     handlePasswordChange(password) {
-        this.setState({password: {value: password, touched: true, valid: password.length > 6}});
+        const validatePassNumbers = /[0-9]/;
+        const validatePassCapital = /[A-Z]/;
+        this.setState({password: {value: password, touched: true, valid: password.length > 6 && validatePassNumbers.test(password) && validatePassCapital.test(password)}});
     }
 
     handleUsernameChange(username) {

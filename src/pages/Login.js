@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Recaptcha from 'react-recaptcha';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import qs from 'qs';
@@ -15,7 +16,10 @@ export default class Login extends Component {
             value: '',
             touched: false,
             valid: false,
-        }
+        },
+        isCaptchaValid: false,
+        isErrorShown: false,
+        isFormValid: false
     };
 
     handlePasswordChange(password) {
@@ -27,11 +31,30 @@ export default class Login extends Component {
         this.setState({email: {value: email, touched: true, valid: validateEmailRegEx.test(email)}})
     }
 
+    // Show message in console when reCaptcha plugin is loaded
+    onCaptchaLoad = () => {
+        console.log('Captcha loaded')
+    }
+
+    // Update state after reCaptcha validates visitor
+    onCaptchaVerify = (response) => {
+        this.setState({
+            isCaptchaValid: true
+        })
+    }
+
     async login() {
         const {password, email} = this.state;
 
         if (!process.env.REACT_APP_API_URL) {
             throw new Error('REACT_APP_API_URL missing')
+        }
+
+        if (this.state.isCaptchaValid) {
+            this.setState({
+                isErrorShown: false,
+                isFormValid: true
+            })
         }
 
         try {
@@ -48,6 +71,9 @@ export default class Login extends Component {
             });
         } catch (err) {
             console.log(err);
+            this.setState({
+                isErrorShown: true
+            })
         }
     }
 
@@ -93,6 +119,22 @@ export default class Login extends Component {
                                     </div>
                                 </div>
                             </div>
+
+                            <div className="field">
+                            {/* !! */}
+                            {/* Make sure to use your 'sitekey' for Google reCaptcha API! */}
+                            {/* !! */}
+                            <Recaptcha
+                                sitekey="6Le9cYIUAAAAAAFcFAzHW2zsyHDyxbleuaZ0_bQR"
+                            />
+                            </div>
+
+                            <div className="field">
+                            {this.state.isErrorShown && (
+                                <p>Please, make sure to fill all fields.</p>
+                            )}
+                            </div>
+                            
                             <div className="field">
                                 <div className="control">
                                     <button className="button" disabled={!password.valid || !email.valid}

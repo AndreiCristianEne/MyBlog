@@ -21,7 +21,7 @@ export default class Article extends Component {
         };
     }
 
-
+    //xss
     getArticleData(data) {
         return sanitizeHtml(draftToHtml(data));
     }
