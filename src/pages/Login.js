@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Recaptcha from 'react-recaptcha';
 import {Link} from 'react-router-dom';
+import ReCAPTCHA from "react-google-recaptcha";
 import axios from 'axios';
 import qs from 'qs';
 
@@ -17,9 +17,10 @@ export default class Login extends Component {
             touched: false,
             valid: false,
         },
-        isCaptchaValid: false,
-        isErrorShown: false,
-        isFormValid: false
+        captcha: {
+            valid: false,
+            value: null,
+        }
     };
 
     handlePasswordChange(password) {
@@ -31,36 +32,22 @@ export default class Login extends Component {
         this.setState({email: {value: email, touched: true, valid: validateEmailRegEx.test(email)}})
     }
 
-    // Show message in console when reCaptcha plugin is loaded
-    onCaptchaLoad = () => {
-        console.log('Captcha loaded')
-    }
-
-    // Update state after reCaptcha validates visitor
-    onCaptchaVerify = (response) => {
-        this.setState({
-            isCaptchaValid: true
-        })
+    handleCaptcha(value) {
+        this.setState({captcha: {valid: true, value: value}})
     }
 
     async login() {
-        const {password, email} = this.state;
+        const {password, email, captcha} = this.state;
 
         if (!process.env.REACT_APP_API_URL) {
             throw new Error('REACT_APP_API_URL missing')
         }
 
-        if (this.state.isCaptchaValid) {
-            this.setState({
-                isErrorShown: false,
-                isFormValid: true
-            })
-        }
-
         try {
             const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/user/login.php`, qs.stringify({
                 email: email.value,
-                password: password.value
+                password: password.value,
+                captcha: captcha.valid,
             })).then(response => {
                 if (response.status === 200 && !response.data.requestChangePassword) {
                     window.location.href = '/';
@@ -78,7 +65,7 @@ export default class Login extends Component {
     }
 
     render() {
-        const {password, email} = this.state;
+        const {password, email, captcha} = this.state;
 
         return (
             <div className="section">
@@ -121,23 +108,15 @@ export default class Login extends Component {
                             </div>
 
                             <div className="field">
-                            {/* !! */}
-                            {/* Make sure to use your 'sitekey' for Google reCaptcha API! */}
-                            {/* !! */}
-                            <Recaptcha
-                                sitekey="6Le9cYIUAAAAAAFcFAzHW2zsyHDyxbleuaZ0_bQR"
-                            />
+                                <ReCAPTCHA
+                                    sitekey="6LeJhYIUAAAAAEX9ME3cCXd4jOd2u9xr8FOTUCQH"
+                                    onChange={value => this.handleCaptcha(value)}
+                                />
                             </div>
 
                             <div className="field">
-                            {this.state.isErrorShown && (
-                                <p>Please, make sure to fill all fields.</p>
-                            )}
-                            </div>
-                            
-                            <div className="field">
                                 <div className="control">
-                                    <button className="button" disabled={!password.valid || !email.valid}
+                                    <button className="button" disabled={!password.valid || !email.valid || !captcha.valid}
                                             onClick={() => this.login()}>Login
                                     </button>
                                 </div>
