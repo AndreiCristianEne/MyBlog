@@ -7,6 +7,7 @@ include "../../protected_session.php";
 
 if ($_POST["COMMENT_DATA"] && $_POST['AUTH_TOKEN'] && $_POST['ARTICLE_ID']) {
 
+    //comment data and data for the article which received the commend
     $comment_data = $_POST["COMMENT_DATA"];
     $article_id = $_POST["ARTICLE_ID"];
     $token = $_POST['AUTH_TOKEN'];
@@ -16,6 +17,7 @@ if ($_POST["COMMENT_DATA"] && $_POST['AUTH_TOKEN'] && $_POST['ARTICLE_ID']) {
 
 
     try {
+        //prepared statement to insert the comment in the database for the appropriate article
         $stmt = $conn->prepare("INSERT INTO comments (comment, user_id, article_id) VALUES (:comment_data, :user_id, :article_id)");
 
         $stmt->bindParam(':comment_data', $comment_data);

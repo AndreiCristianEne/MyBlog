@@ -6,6 +6,7 @@ include "../../protected_session.php";
 
 if ($_POST["title"] && $_POST["article_data"] && $_POST['AUTH_TOKEN']) {
 
+    //saving the article data
     $article_data = $_POST["article_data"];
     $article_title = addslashes($_POST["title"]);
     $article_description = addslashes($_POST["description"]);
@@ -16,6 +17,7 @@ if ($_POST["title"] && $_POST["article_data"] && $_POST['AUTH_TOKEN']) {
 
 
     try {
+        //prepared statement for the insertion of the article
         $stmt = $conn->prepare("INSERT INTO articles (title, user_id, article_data, description) VALUES (:title, :user_id, :article_data, :description)");
 
         $stmt->bindParam(':title', $article_title);

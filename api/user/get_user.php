@@ -4,7 +4,7 @@ include "../../session.php";
 include "../../connect_mysql.php";
 include "../../jwt.php";
 include "../../protected_session.php";
-
+//endpoint for getting a user's data
 if ($_POST['AUTH_TOKEN']) {
     $token = $_POST['AUTH_TOKEN'];
     $token_data = explode('.', $token);

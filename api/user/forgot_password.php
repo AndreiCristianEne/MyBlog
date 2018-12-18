@@ -13,6 +13,7 @@ if ($_POST["email"]) {
 
     $email = $_POST["email"];
 
+    //making sure the email exists and is valid
     if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
         header("INVALID EMAIL ADDRESS", true, 400);
         exit();

@@ -17,7 +17,7 @@ function base64UrlDecode($data)
 
 // Highly confidential
 $secret = "LuvTw5pYngWvDsn6grggImBQhdjeD/T+QRHwpSikyQs=";
-
+//method used to essentially create the token
 function generateJWT(
     $algo,
     $header,
@@ -33,7 +33,7 @@ function generateJWT(
 
     return $jwt;
 }
-
+//verified the signature of the token, return a boolean
 function verifyJWT($algo, $jwt, $secret)
 {
     list($headerEncoded, $payloadEncoded, $signatureEncoded) = explode('.', $jwt);

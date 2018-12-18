@@ -4,6 +4,7 @@ include "../../jwt.php";
 include "../../protected_session.php";
 
 if ($_POST["id"] && $_POST['AUTH_TOKEN']) {
+    //deleting an article
     $article_id = $_POST["id"];
 
     $token = $_POST['AUTH_TOKEN'];
@@ -19,6 +20,7 @@ if ($_POST["id"] && $_POST['AUTH_TOKEN']) {
 
         $result = $stmt->fetchAll();
         if (count($result) > 0) {
+            //signald the required article was found in the list of articles
             $found = true;
         }
 
@@ -26,6 +28,7 @@ if ($_POST["id"] && $_POST['AUTH_TOKEN']) {
             foreach ($result as $article) {
                if ($article['user_id'] === $user_id || isAdmin($user_id)) {
                    try {
+                       //prepared statement for deleting the found article (if it exists)
                        $stmt = $conn->prepare("DELETE FROM articles WHERE id=:article_id");
                        $stmt->bindParam(':article_id', $article_id);
                        $stmt->execute();

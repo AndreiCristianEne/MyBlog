@@ -2,7 +2,7 @@
 include "../functions/functions.php";
 include "../../jwt.php";
 include "../../protected_session.php";
-
+//is the user of the token the author of a certain article - this checks it
 if ($_POST['AUTH_TOKEN'] && $_POST['id']) {
     $article_id = $_POST['id'];
     $token = $_POST['AUTH_TOKEN'];

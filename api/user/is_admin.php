@@ -2,7 +2,7 @@
 include "../functions/functions.php";
 include "../../jwt.php";
 include "../../protected_session.php";
-
+//used to check the rights of a user (admin or standard)
 if ($_POST['AUTH_TOKEN']) {
     $token = $_POST['AUTH_TOKEN'];
     $token_data = explode('.', $token);

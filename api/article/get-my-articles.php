@@ -13,6 +13,7 @@ if ($_POST['AUTH_TOKEN']) {
 
     try {
         $articles = [];
+        //prepared stamenet for getting the articles under a certain user
         $stmt = $conn->prepare("SELECT articles.*, users.username, users.avatar_path FROM articles LEFT JOIN users ON users.user_id = articles.user_id WHERE users.user_id = :user_id");
         $stmt->bindParam(':user_id', $user_id);
 
@@ -21,7 +22,7 @@ if ($_POST['AUTH_TOKEN']) {
         $result = $stmt->fetchAll();
         foreach ($result as $article) {
             $jsonArticle = json_decode("{}");
-
+            //setting the data for article    
             $jsonArticle->title = stripslashes($article['title']);
             $jsonArticle->article_data = $article['description'];
             $jsonArticle->user_id = $article['user_id'];

@@ -32,6 +32,7 @@ export default class Login extends Component {
         this.setState({email: {value: email, touched: true, valid: validateEmailRegEx.test(email)}})
     }
 
+    //check captcha for being valid
     handleCaptcha(value) {
         this.setState({captcha: {valid: true, value: value}})
     }
@@ -44,18 +45,19 @@ export default class Login extends Component {
         }
 
         try {
-            const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/user/login.php`, qs.stringify({
+            //make the request to the endpoint for logging in
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/user/login.php`, qs.stringify({
                 email: email.value,
                 password: password.value,
-                captcha: captcha.valid,
-            })).then(response => {
-                if (response.status === 200 && !response.data.requestChangePassword) {
-                    window.location.href = '/';
-                } else {
-                    window.location.href = '/change-password';
-                }
-                localStorage.setItem('AUTH_TOKEN', response.data.token);
-            });
+                captcha: captcha.value,
+            }));
+            //console.log(response);
+            localStorage.setItem('AUTH_TOKEN', response.data.token);
+            if (response.status === 200 && !response.data.requestChangePassword) {
+                window.location.href = '/';
+            } else {
+                window.location.href = '/change-password';
+            }
         } catch (err) {
             console.log(err);
             this.setState({
@@ -106,7 +108,7 @@ export default class Login extends Component {
                                     </div>
                                 </div>
                             </div>
-
+                            {/* sets up recaptcha connection */}
                             <div className="field">
                                 <ReCAPTCHA
                                     sitekey="6LeJhYIUAAAAAEX9ME3cCXd4jOd2u9xr8FOTUCQH"

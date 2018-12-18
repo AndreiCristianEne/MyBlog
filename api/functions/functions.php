@@ -3,7 +3,7 @@ include "../../cors.php";
 include "../../session.php";
 include "../../connect_mysql.php";
 
-
+//check whether a specific user has admin functionality allowed or not
 function isAdmin($user_id) {
     global $conn;
     try {

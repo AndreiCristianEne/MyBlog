@@ -76,10 +76,10 @@ export default class Index extends Component {
             shouldChangePassword ? <Redirect to="/change-password"/> :
                 <div className="section">
                     <div className="columns">
-                        <div className="column">
+                        <div className="column is-2">
                             <Menu activeClass={'articles'}/>
                         </div>
-                        <div className="column">
+                        <div className="column is-offset-2 is-8">
                             {loading && <h1>Loading</h1>}
                             {
                                 !loading && this.renderArticles(articles)

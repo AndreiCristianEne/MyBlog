@@ -17,7 +17,9 @@ export default class Menu extends Component {
             <aside className="menu">
                 <p className="menu-label">Home</p>
                 <ul className="menu-list">
-                    <li><a className={cx({'is-active': isArticlesActive})}><Link to={"/"}>Articles</Link></a></li>
+                    {/* why do you need an extension for using classnames ? */}
+                    {/* <li><a className={cx({'is-active': isArticlesActive})}><Link to={"/"}>Articles</Link></a></li> */}
+                    <li><a className={`${isArticlesActive && 'is-active'}`}><Link to={"/"}>Articles</Link></a></li>
                 </ul>
                 {!isLoggedIn() ? (
                     <div>
