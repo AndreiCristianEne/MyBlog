@@ -12,7 +12,7 @@ if ($_POST["email"] && $_POST["password"] && $_POST["captcha"]) {
     //the necessary information for the captcha check
     //basically on the backend, the test for making sure the captcha is valid is made
     $captcha = $_POST["captcha"];
-    $key = "6LeJhYIUAAAAALlsFny-_wZEXFPrp9JZx6Mum-36";
+    $key = "";
     $url = 'https://www.google.com/recaptcha/api/siteverify';
     $params = array(
         'secret' => $key,
