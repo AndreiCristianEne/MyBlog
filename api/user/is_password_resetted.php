@@ -20,6 +20,7 @@ if ($_POST["AUTH_TOKEN"]) {
 
         $result = $stmt->fetchAll();
         foreach ($result as $user) {
+            // if it's 1, it wasn't changed, if it's 0, it's been changed in change_password.php
             if ($user['forgot_password'] == 1) {
                 echo false;
                 exit();

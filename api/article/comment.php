@@ -7,7 +7,7 @@ include "../../protected_session.php";
 
 if ($_POST["COMMENT_DATA"] && $_POST['AUTH_TOKEN'] && $_POST['ARTICLE_ID']) {
 
-    //comment data and data for the article which received the commend
+    //comment data and data for the article which received the comment
     $comment_data = $_POST["COMMENT_DATA"];
     $article_id = $_POST["ARTICLE_ID"];
     $token = $_POST['AUTH_TOKEN'];

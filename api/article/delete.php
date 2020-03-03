@@ -26,6 +26,7 @@ if ($_POST["id"] && $_POST['AUTH_TOKEN']) {
 
         if ($found) {
             foreach ($result as $article) {
+                // the admin can delete any articles, or the user can delete an article if it's his own
                if ($article['user_id'] === $user_id || isAdmin($user_id)) {
                    try {
                        //prepared statement for deleting the found article (if it exists)

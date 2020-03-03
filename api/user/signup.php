@@ -30,6 +30,8 @@ if ($_POST["username"] && $_POST["password"] && $_POST["email"] && $_POST["avata
     $options = [
         'cost' => 12
     ];
+    // cost keeps the balance between security of hashing and performance
+    // password bccrypt related to the algorithm for hashing, starts with $2y$ and is 60-letter long
     $password_hash = password_hash($password, PASSWORD_BCRYPT, $options);
     $username = $_POST["username"];
 

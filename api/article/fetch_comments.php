@@ -14,6 +14,7 @@ try {
 
     $result = $stmt->fetchAll();
     foreach ($result as $comm) {
+        // string to object json
         $comment = json_decode("{}");
         $comment->comment = $comm['comment'];
         $comment->user_id = $comm['user_id'];
@@ -23,7 +24,7 @@ try {
         //add the found comment (which belongs to the article) to the array to be sent back    
         array_push($comments, $comment);
     }
-
+    // json to string
     echo json_encode($comments);
     exit();
 

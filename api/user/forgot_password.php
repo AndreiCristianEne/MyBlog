@@ -41,7 +41,7 @@ if ($_POST["email"]) {
                     $stmt->bindParam(':email', $email);
 
                     $stmt->execute();
-
+                    // replace the password variable in the email template
                     $emailForgotPasswordTemplateContent = str_replace('{{password}}', $newPassword, $emailForgotPasswordTemplateContent);
 
                     $mail = new PHPMailer(true);
